@@ -89,12 +89,40 @@ CREATE SEQUENCE public.pizza_id_seq
 ALTER TABLE public.pizza_id_seq OWNER TO webmaster;
 
 --
+-- Name: pizza_ingredients; Type: TABLE; Schema: public; Owner: webmaster
+--
+
+CREATE TABLE public.pizza_ingredients (
+    id integer NOT NULL,
+    pizza_id integer NOT NULL,
+    ingredient_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pizza_ingredients OWNER TO webmaster;
+
+--
+-- Name: pizza_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: webmaster
+--
+
+CREATE SEQUENCE public.pizza_ingredients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pizza_ingredients_id_seq OWNER TO webmaster;
+
+--
 -- Data for Name: doctrine_migration_versions; Type: TABLE DATA; Schema: public; Owner: webmaster
 --
 
 COPY public.doctrine_migration_versions (version, executed_at, execution_time) FROM stdin;
 DoctrineMigrations\\Version20211220091129	2021-12-20 09:11:54	127
 DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
+DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
 \.
 
 
@@ -133,6 +161,25 @@ COPY public.pizza (id, name, price, photo_filename, description) FROM stdin;
 
 
 --
+-- Data for Name: pizza_ingredients; Type: TABLE DATA; Schema: public; Owner: webmaster
+--
+
+COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
+1	1	1
+2	1	8
+3	1	9
+4	2	3
+5	2	8
+6	2	9
+7	2	10
+8	3	4
+9	3	5
+10	3	8
+11	3	9
+\.
+
+
+--
 -- Name: ingredient_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
@@ -144,6 +191,13 @@ SELECT pg_catalog.setval('public.ingredient_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.pizza_id_seq', 1, false);
+
+
+--
+-- Name: pizza_ingredients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
+--
+
+SELECT pg_catalog.setval('public.pizza_ingredients_id_seq', 1, false);
 
 
 --
@@ -163,11 +217,49 @@ ALTER TABLE ONLY public.ingredient
 
 
 --
+-- Name: pizza_ingredients pizza_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.pizza_ingredients
+    ADD CONSTRAINT pizza_ingredients_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: pizza pizza_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
 --
 
 ALTER TABLE ONLY public.pizza
     ADD CONSTRAINT pizza_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_ad0714f6933fe08c; Type: INDEX; Schema: public; Owner: webmaster
+--
+
+CREATE INDEX idx_ad0714f6933fe08c ON public.pizza_ingredients USING btree (ingredient_id);
+
+
+--
+-- Name: idx_ad0714f6d41d1d42; Type: INDEX; Schema: public; Owner: webmaster
+--
+
+CREATE INDEX idx_ad0714f6d41d1d42 ON public.pizza_ingredients USING btree (pizza_id);
+
+
+--
+-- Name: pizza_ingredients fk_ad0714f6933fe08c; Type: FK CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.pizza_ingredients
+    ADD CONSTRAINT fk_ad0714f6933fe08c FOREIGN KEY (ingredient_id) REFERENCES public.ingredient(id);
+
+
+--
+-- Name: pizza_ingredients fk_ad0714f6d41d1d42; Type: FK CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.pizza_ingredients
+    ADD CONSTRAINT fk_ad0714f6d41d1d42 FOREIGN KEY (pizza_id) REFERENCES public.pizza(id);
 
 
 --
