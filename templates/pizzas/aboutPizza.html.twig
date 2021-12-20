@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PizzasController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .card {width: 800px; margin: auto; dicplay: flex;}
+</style>
+
+<div class="card">
+    <div>
+        <img  src="../images/{{ pizza.photoFilename }}" >
+    </div>
+    <div>
+        <h3>Ваша пицца <em>{{pizza.name}}</em></h3>
+        <p>{{pizza.description}}</p>
+        <p><em>{{pizza.price}}</em></p>
+    </div>
+</div>
+{% endblock %}
