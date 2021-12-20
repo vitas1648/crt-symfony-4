@@ -60,11 +60,41 @@ CREATE SEQUENCE public.ingredient_id_seq
 ALTER TABLE public.ingredient_id_seq OWNER TO webmaster;
 
 --
+-- Name: pizza; Type: TABLE; Schema: public; Owner: webmaster
+--
+
+CREATE TABLE public.pizza (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    price integer NOT NULL,
+    photo_filename character varying(255) DEFAULT NULL::character varying,
+    description text
+);
+
+
+ALTER TABLE public.pizza OWNER TO webmaster;
+
+--
+-- Name: pizza_id_seq; Type: SEQUENCE; Schema: public; Owner: webmaster
+--
+
+CREATE SEQUENCE public.pizza_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pizza_id_seq OWNER TO webmaster;
+
+--
 -- Data for Name: doctrine_migration_versions; Type: TABLE DATA; Schema: public; Owner: webmaster
 --
 
 COPY public.doctrine_migration_versions (version, executed_at, execution_time) FROM stdin;
 DoctrineMigrations\\Version20211220091129	2021-12-20 09:11:54	127
+DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
 \.
 
 
@@ -87,10 +117,33 @@ COPY public.ingredient (id, name) FROM stdin;
 
 
 --
+-- Data for Name: pizza; Type: TABLE DATA; Schema: public; Owner: webmaster
+--
+
+COPY public.pizza (id, name, price, photo_filename, description) FROM stdin;
+1	Пепперони	495	\N	\N
+2	Маргарита	435	\N	\N
+3	Гавайская	495	\N	\N
+4	Грибная	435	\N	\N
+5	Ветчина и грыбы	515	\N	\N
+6	Куриная	455	\N	\N
+7	Индейка и грыбы	515	\N	\N
+8	Сырная курица	515	\N	\N
+\.
+
+
+--
 -- Name: ingredient_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
 SELECT pg_catalog.setval('public.ingredient_id_seq', 1, false);
+
+
+--
+-- Name: pizza_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
+--
+
+SELECT pg_catalog.setval('public.pizza_id_seq', 1, false);
 
 
 --
@@ -107,6 +160,14 @@ ALTER TABLE ONLY public.doctrine_migration_versions
 
 ALTER TABLE ONLY public.ingredient
     ADD CONSTRAINT ingredient_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pizza pizza_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.pizza
+    ADD CONSTRAINT pizza_pkey PRIMARY KEY (id);
 
 
 --
