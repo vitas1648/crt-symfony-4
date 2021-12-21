@@ -15,7 +15,7 @@ use Twig\Environment;
 
 class PizzasController extends AbstractController
 {
-    #[Route('/pizzas', name: 'pizzas')]
+    #[Route('/', name: 'homepage')]
     public function index(Environment $twig, PizzaRepository $pizzaRepository): Response
     {
         return new Response($twig->render('pizzas/index.html.twig', [
