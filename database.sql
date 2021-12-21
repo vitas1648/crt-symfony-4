@@ -65,9 +65,10 @@ ALTER TABLE public.ingredient_id_seq OWNER TO webmaster;
 
 CREATE TABLE public.pizza (
     id integer NOT NULL,
+    image character varying(255) NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL,
     name character varying(255) NOT NULL,
     price integer NOT NULL,
-    photo_filename character varying(255) DEFAULT NULL::character varying,
     description text
 );
 
@@ -122,7 +123,6 @@ ALTER TABLE public.pizza_ingredients_id_seq OWNER TO webmaster;
 COPY public.doctrine_migration_versions (version, executed_at, execution_time) FROM stdin;
 DoctrineMigrations\\Version20211220091129	2021-12-20 09:11:54	127
 DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
-DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
 \.
 
 
@@ -131,16 +131,11 @@ DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
 --
 
 COPY public.ingredient (id, name) FROM stdin;
-1	салями
-2	грибы
-3	бекон
-4	ветчина
-5	ананнас
-6	индейка
-7	курица
-8	сыр чеддер
-9	сыр моцарелла
-10	сыр пармезан
+1	sfsfgsgs
+2	tutukk
+3	ncbnfghjd
+4	sfgsfgn
+5	uityhbv
 \.
 
 
@@ -148,15 +143,9 @@ COPY public.ingredient (id, name) FROM stdin;
 -- Data for Name: pizza; Type: TABLE DATA; Schema: public; Owner: webmaster
 --
 
-COPY public.pizza (id, name, price, photo_filename, description) FROM stdin;
-1	Пепперони	495	pipperoni.jpg	На тонком тесте, с соусом по специальному итальянскому рецепту.
-2	Маргарита	435	margarita.jpg	На тонком тесте, с соусом по специальному итальянскому рецепту.
-3	Гавайская	495	gavayskaya.png	На тонком тесте, с соусом по специальному итальянскому рецепту.
-4	Грибная	435	mushrooms.jpg	На тонком тесте, с соусом по специальному итальянскому рецепту.
-5	Ветчина и грыбы	515	mushrooms.jpg	На тонком тесте, с соусом по специальному итальянскому рецепту.
-7	Индейка и грыбы	515	mushrooms.jpg	На тонком тесте, с соусом по специальному итальянскому рецепту.
-6	Куриная	455	chiken.png	На тонком тесте, с соусом по специальному итальянскому рецепту.
-8	Сырная курица	515	chiken.png	На тонком тесте, с соусом по специальному итальянскому рецепту.
+COPY public.pizza (id, image, updated_at, name, price, description) FROM stdin;
+1	carbonara_30.jpg	2021-12-21 21:34:14	qweqeq	213242	\N
+2	_indiana.png	2021-12-21 21:34:26	dasfadf	6765	\N
 \.
 
 
@@ -166,16 +155,12 @@ COPY public.pizza (id, name, price, photo_filename, description) FROM stdin;
 
 COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
 1	1	1
-2	1	8
-3	1	9
-4	2	3
-5	2	8
-6	2	9
-7	2	10
-8	3	4
-9	3	5
-10	3	8
-11	3	9
+2	1	3
+3	1	5
+4	2	1
+5	2	2
+6	2	4
+7	2	5
 \.
 
 
@@ -183,21 +168,21 @@ COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
 -- Name: ingredient_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.ingredient_id_seq', 1, false);
+SELECT pg_catalog.setval('public.ingredient_id_seq', 5, true);
 
 
 --
 -- Name: pizza_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.pizza_id_seq', 1, false);
+SELECT pg_catalog.setval('public.pizza_id_seq', 2, true);
 
 
 --
 -- Name: pizza_ingredients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.pizza_ingredients_id_seq', 1, false);
+SELECT pg_catalog.setval('public.pizza_ingredients_id_seq', 7, true);
 
 
 --
