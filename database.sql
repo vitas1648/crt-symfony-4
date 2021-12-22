@@ -123,6 +123,8 @@ ALTER TABLE public.pizza_ingredients_id_seq OWNER TO webmaster;
 COPY public.doctrine_migration_versions (version, executed_at, execution_time) FROM stdin;
 DoctrineMigrations\\Version20211220091129	2021-12-20 09:11:54	127
 DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
+DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
+DoctrineMigrations\\Version20211222133848	2021-12-22 13:39:15	434
 \.
 
 
@@ -131,11 +133,19 @@ DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
 --
 
 COPY public.ingredient (id, name) FROM stdin;
-1	sfsfgsgs
-2	tutukk
-3	ncbnfghjd
-4	sfgsfgn
-5	uityhbv
+1	салями
+2	шампиньоны
+3	бекон
+4	ветчина
+5	ананнас
+6	индейка
+7	курица
+8	сыр чеддер
+9	сыр моцарелла
+10	сыр пармезан
+11	вяленные томаты
+12	сладкий перец
+13	перец чили
 \.
 
 
@@ -144,8 +154,16 @@ COPY public.ingredient (id, name) FROM stdin;
 --
 
 COPY public.pizza (id, image, updated_at, name, price, description) FROM stdin;
-1	carbonara_30.jpg	2021-12-21 21:34:14	qweqeq	213242	\N
-2	_indiana.png	2021-12-21 21:34:26	dasfadf	6765	\N
+1	pepperony.jpeg	2021-12-22 14:01:17	Пепперони	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+2	margarita_30.jpg	2021-12-22 14:06:51	Маргарита	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+3	_gavayskaya.png	2021-12-22 14:07:03	Гавайская	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+4	salvadora_30.jpg	2021-12-22 14:08:09	Грибная	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+5	chelentano_new_30.jpg	2021-12-22 16:57:35	Ветчина и грыбы	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+7	_chiken_pizza.png	2021-12-22 16:59:39	Индейка и грыбы	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+6	_chiken_pizza.png	2021-12-22 16:59:49	Куриная	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+8	_chiken_pizza.png	2021-12-22 17:00:01	Сырная курица	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+9	pepperony.jpeg	2021-12-22 17:00:23	Пепперони острая	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
+10	pipperoni.jpg	2021-12-22 17:00:46	Пепперони new	495	На тонком тесте, с соусом по специальному итальянскому рецепту.
 \.
 
 
@@ -168,14 +186,14 @@ COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
 -- Name: ingredient_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.ingredient_id_seq', 5, true);
+SELECT pg_catalog.setval('public.ingredient_id_seq', 14, true);
 
 
 --
 -- Name: pizza_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.pizza_id_seq', 2, true);
+SELECT pg_catalog.setval('public.pizza_id_seq', 11, true);
 
 
 --

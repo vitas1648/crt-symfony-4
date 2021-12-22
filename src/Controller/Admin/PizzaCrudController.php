@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Pizza;
-use App\Field\VichImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -21,10 +20,12 @@ class PizzaCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            idField::new('id')->hideOnForm(),
             TextField::new('name'),
             NumberField::new('price'),
             TextField::new('description'),
             VichImageField::new('imageFile')->onlyOnForms(),
+            VichImageField::new('image')->hideOnForm(),
         ];
     }
 }

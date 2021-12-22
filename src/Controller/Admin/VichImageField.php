@@ -1,6 +1,6 @@
 <?PHP
 
-namespace App\Field;
+namespace App\Controller\Admin;
 
 use App\Form\MetaDataType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
