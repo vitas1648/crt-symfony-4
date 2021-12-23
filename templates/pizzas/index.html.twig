@@ -6,27 +6,40 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .pizzas {width: 800px; margin: auto; }
     ul { list-style: none; }
-    .cards { display: flex; flex-wrap: wrap; width: 800px; margin: auto; justify-content: space-between;}
+    .cards { display: flex; flex-wrap: wrap; margin: auto; justify-content: space-around;}
     .card-small { border: 1px solid gray; margin: 5px; padding: 10px; width: 25%; text-align: center; }
     .card-small:hover { box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     a { text-decoration: none; color: black;}
     .card-small img {width: 100%;}
     h3 {text-align: center;}
+    .pizza-paginator {display: flex; justify-content: space-around;}
+    .pizza-paginator-item {padding: 10px; margin: 10px; }
+    .pizza-paginator-item:hover { box-shadow: 0 0 10px rgba(0,0,0,0.5); } 
 </style>
-
-<h3>Выберите пиццу</h3>
-<ul class="cards">
-    {% for pizza in pizzas %}
-        <div class="card-small">
-            <a href="{{path ('pizza', {id: pizza.id})}}">
-                <li>
-                    <h4>{{pizza.name}}</h4>
-                    <img src="images/pizza/{{ pizza.image }}" >
-                    <p>Цена: <strong>{{pizza.price}}</strong> р.</p>
-                </li>
-            </a>
-        </div>
-    {% endfor %}
-</ul>
+<div class="pizzas">
+    <h3>Выберите пиццу</h3>
+    <ul class="cards">
+        {% for pizza in pizzas %}
+            <div class="card-small">
+                <a href="{{path ('pizza', {id: pizza.id})}}">
+                    <li>
+                        <h4>{{pizza.name}}</h4>
+                        <img src="images/pizza/{{ pizza.image }}" >
+                        <p>Цена: <strong>{{pizza.price}}</strong> р.</p>
+                    </li>
+                </a>
+            </div>
+        {% endfor %}
+    </ul>
+    <div class="pizza-paginator">
+        {% if previous >= 0 %}
+            <a class="pizza-paginator-item" href="{{ path('homepage', { offset: previous }) }}">Назад</a>
+        {% endif %}
+        {% if next < pizzas|length %}
+            <a class="pizza-paginator-item" href="{{ path('homepage', { offset: next }) }}">Далее</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
