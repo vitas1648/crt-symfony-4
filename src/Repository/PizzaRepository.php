@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Pizza;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,11 +15,26 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PizzaRepository extends ServiceEntityRepository
 {
+    public const PAGINATOR_PER_PAGE = 5;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Pizza::class);
     }
 
+    public function getPizzaPaginator(int $offset): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            // ->andWhere('c.conference = :conference')
+            // ->setParameter('conference', $conference)
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery()
+        ;
+
+        return new Paginator($query);
+    }
     // /**
     //  * @return Pizza[] Returns an array of Pizza objects
     //  */
