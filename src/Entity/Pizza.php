@@ -61,10 +61,16 @@ class Pizza
      */
     private $pizzaIngredients;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Basket::class, mappedBy="pizza")
+     */
+    private $baskets;
+
     public function __construct()
     {
         $this->pizzaIngredients = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->baskets = new ArrayCollection();
     }
 
     public function __toString()
@@ -180,6 +186,36 @@ class Pizza
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Basket[]
+     */
+    public function getBaskets(): Collection
+    {
+        return $this->baskets;
+    }
+
+    public function addBasket(Basket $basket): self
+    {
+        if (!$this->baskets->contains($basket)) {
+            $this->baskets[] = $basket;
+            $basket->setPizza($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBasket(Basket $basket): self
+    {
+        if ($this->baskets->removeElement($basket)) {
+            // set the owning side to null (unless already changed)
+            if ($basket->getPizza() === $this) {
+                $basket->setPizza(null);
+            }
+        }
 
         return $this;
     }
