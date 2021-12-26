@@ -88,5 +88,14 @@ https://symfony.com/doc/current/setup.html#symfony-lts-versions
 **_Задания, помеченные как “дополнительно” и выделенные звездочкой - не обязательные и делаются по вашему желанию (+ баллы)_**
 
 #### Доступ в EasyAdmin ####
+
 login: `admin`
 password: `admin`
+
+#### Запуск проекта ####
+
+`docker-compose up -d`
+
+`docker-compose exec database psql -U webmaster symfony < database.sql`
+
+`docker-compose exec app composer install -n`

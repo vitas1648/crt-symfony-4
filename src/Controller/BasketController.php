@@ -25,13 +25,19 @@ class BasketController extends AbstractController
     {
         $basket = $basketRepository->findAll();
         $data = [];
+        $count = 0;
+        $amount = 0;
         foreach ($basket as $item) 
         {
             $pizza = $pizzaRepository->findOneBy(['id' => (string)$item->getPizza()->getId()]);
             $item->setPizza($pizza);
+            $count += $item->getQuantity();
+            $amount += $item->getQuantity() * $pizza->getPrice();
         }
         return new Response($twig->render('basket/basket.html.twig', [
             'basket' => $basket,
+            'count' => $count,
+            'amount' => $amount,
         ]));
     }
 

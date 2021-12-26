@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+<style>
+    .order, .ordering {width: 800px; margin: 10px auto; padding: 10px;}
+    .pizzas td {padding: 5px;}
+</style>
+
+<div class="order">
+    <div class="order-description">
+        <h4>Ваш заказ:</h4>
+        <table class="pizzas">
+            <tr>
+                <th>Пицца</th>
+                <th>количество</th>
+                <th>цена</th>
+            </tr>
+            {% for item in basket %}
+                <tr>
+                    <td>{{ item.pizza.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.pizza.price }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <h4>В заказе Пицц: {{ count }} шт.</h4>
+        <p>На сумму: {{ amount }} р.</p>
+    </div>
+</div>
+<div class="ordering">
+    {{ form(form) }}
+</div>
+
+{% endblock %}

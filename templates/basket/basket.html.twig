@@ -32,12 +32,15 @@
                 </div>
             {% endfor %}
         </div>
-        {% if amount is defined%}
-        <h4>Сумма заказа: {{ amount }} р.</h4>
+        {% if count is defined %}
+            <h4>Пицц в заказе: {{ count }} шт.</h4>
+        {% endif %}
+        {% if amount is defined %}
+            <h4>Сумма заказа: {{ amount }} р.</h4>
         {% endif %}
         <div class="basket-buttons">
             <a class="button" href={{ path('basket_clear') }}>Очистить корзину</a>
-            <a class="button" href=#>Оформить заказ</a>
+            <a class="button" href={{ path('order') }}>Оформить заказ</a>
         </div>
     {% else %}
         <p class="message">Корзина пуста</p>
