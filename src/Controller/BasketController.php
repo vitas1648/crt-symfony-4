@@ -8,6 +8,7 @@ use App\Form\BasketClearType;
 use App\Form\BasketEditPizzaType;
 use App\Repository\PizzaRepository;
 use App\Repository\BasketRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,37 +25,13 @@ class BasketController extends AbstractController
     {
         $basket = $basketRepository->findAll();
         $data = [];
-        $entityManager = $this->getDoctrine()->getManager();
-        foreach ($basket as $item)
+        foreach ($basket as $item) 
         {
             $pizza = $pizzaRepository->findOneBy(['id' => (string)$item->getPizza()->getId()]);
             $item->setPizza($pizza);
-            $form = $this->createForm(BasketEditPizzaType::class, $item);
-            $data[] = ['pizza' => $item, 'form' => $form->createView()];
-            $form->handleRequest($request);
-            if ($form->isSubmitted()) 
-            {
-                $entityManager->remove($item);
-                $entityManager->flush();
-                return $this->redirectToRoute('basket', [
-                ]);
-            }    
         }
-        $formClear = $this->createForm(BasketClearType::class);
-        $formClear->handleRequest($request);
-        if ($formClear->isSubmitted()) 
-        {
-            foreach ($basket as $item)
-            {
-                $entityManager->remove($item);
-            }
-            $entityManager->flush();
-            return $this->redirectToRoute('basket', [
-            ]);
-    }
         return new Response($twig->render('basket/basket.html.twig', [
-            'basket' => $data,
-            'formClear' => $formClear->createView(),
+            'basket' => $basket,
         ]));
     }
 
@@ -64,7 +41,6 @@ class BasketController extends AbstractController
         PizzaRepository $pizzaRepository,
         BasketRepository $basketRepository): RedirectResponse
     {
-        // $pizzaRepozitory = new PizzaRepository();
         $id = $request->query->get('pizza');
         $quantity = $request->query->get('quantity');
         $entityManager = $this->getDoctrine()->getManager();
@@ -74,20 +50,65 @@ class BasketController extends AbstractController
         } else {
             $basketItem = new Basket();
             $basketItem->setQuantity($quantity);
-            // $lastId = $basketRepository->findOneBy([], ['id' => 'DESC']);
-            // $basketItem->setId();
         }
         $basketItem->setPizza($pizzaRepository->findOneBy(['id' => $id]));
         $entityManager->persist($basketItem);
         $entityManager->flush();
-        // $basketUpdate = $basketRepository->findAll();
-        // dump($basketUpdate);
 
         return $this->redirectToRoute('homepage');
+    }
 
-        // dump($basketItem);
-        // return new Response($twig->render('basket/basket_add.html.twig', [
-        //     'pizza' => $basketItem,
-        // ]));
+    #[Route('basket/inc', name: 'basket_inc')]
+    public function inc(
+        Request $request,
+        BasketRepository $basketRepository,
+    ):RedirectResponse
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $id = $request->query->get('id');
+        $basketItem = $basketRepository->findOneBy(['pizza' => $id]);
+        $basketItem->setQuantity($basketItem->getQuantity() + 1);
+        $entityManager->persist($basketItem);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('basket');
+    }
+
+    #[Route('basket/dec', name: 'basket_dec')]
+    public function dec(
+        Request $request,
+        BasketRepository $basketRepository,
+    ):RedirectResponse
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $id = $request->query->get('id');
+        $basketItem = $basketRepository->findOneBy(['pizza' => $id]);
+        if (1 < $basketItem->getQuantity())
+        {
+            $basketItem->setQuantity($basketItem->getQuantity() - 1);
+            $entityManager->persist($basketItem);
+        } 
+        else 
+        {
+            $entityManager->remove($basketItem);
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('basket');
+    }
+
+    #[Route('basket/clear', name:'basket_clear')]
+    public function clear(
+        BasketRepository $basketRepository,
+    ): RedirectResponse
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $basket = $basketRepository->findAll();
+        foreach ($basket as $item) 
+        {
+            $entityManager->remove($item);
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('homepage');
     }
 }

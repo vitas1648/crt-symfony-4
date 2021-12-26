@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\EventSubscriber\NumberFieldEventSubscriber;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,7 +30,8 @@ class BasketEditPizzaType extends AbstractType
                 'choice_label' => 'name',
                 'label' => ' ', 
                 'attr' => ['hidden' => 'true']])
-            // ->add('submit', SubmitType::class, ['label' => 'Удалмть',])
+            ->addEventSubscriber(new NumberFieldEventSubscriber)
+                // ->add('submit', SubmitType::class, ['label' => 'Удалмть',])
             // ->setAction(AbstractController::generateUrl('basket_add'))
             // ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
                 // $formData = $event->getData();

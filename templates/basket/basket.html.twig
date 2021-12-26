@@ -6,28 +6,41 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    img {width: 200px;}
+    .message {text-align: center;}
+    .basket {width: 800px; margin: auto; }
+    .pizza-cards {display: flex; flex-wrap: wrap; justify-content: space-around;} 
+    .pizza-card {text-align: center; margin: 10px; padding: 10px; border: 1px solid gray;}
+    .pizza-img {width: 200px;}
+    .button {margin: 10px; padding: 5px; border: 1px solid gray; color:black; text-decoration: none;}
+    .button:hover {box-shadow: 0 0 10px rgba(0,0,0,0.5);}
+    .basket-buttons {display: flex; flex-wrap: wrap; justify-content: center;}
 </style>
 
-{% for item in basket %}
-    <div>
-        <h4>{{ item.pizza.pizza.name }}</h4>
-        <img src="images/pizza/{{ item.pizza.pizza.image }}" >
-        <p>Цена: {{ item.pizza.pizza.price }} р.</p>
-        
-        {{ form_start(item.form) }}
-        {{ form_end(item.form) }}
-
-    </div>
-{% endfor %}
-{% if basket|length > 0 %}
-    <div>
-        {{ form_start(formClear) }}
-            {# {{ form_row(formClear.submit)}} #}
-        {{ form_end(formClear) }}
-
-    </div>
-{% else %}
-    <p>Корзина пуста</p>
-{% endif %}
+<div class="basket">
+    {% if basket|length > 0 %}
+        <div class="pizza-cards">
+            {% for item in basket %}
+                <div class="pizza-card">
+                    <h4>{{ item.pizza.name }}</h4>
+                    <img class="pizza-img" src="images/pizza/{{ item.pizza.image }}" >
+                    <p>Цена: {{ item.pizza.price }} р.</p>
+                    <div>
+                        <a class="button" href="{{ path('basket_dec', {'id': item.pizza.id} )}}">Меньше</a>
+                        {{ item.quantity }}
+                        <a class="button" href="{{ path('basket_inc', {'id': item.pizza.id} )}}">Больше</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if amount is defined%}
+        <h4>Сумма заказа: {{ amount }} р.</h4>
+        {% endif %}
+        <div class="basket-buttons">
+            <a class="button" href={{ path('basket_clear') }}>Очистить корзину</a>
+            <a class="button" href=#>Оформить заказ</a>
+        </div>
+    {% else %}
+        <p class="message">Корзина пуста</p>
+    {% endif %}
+</div>
 {% endblock %}

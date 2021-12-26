@@ -1,7 +1,7 @@
 <style>
     .navbar {display: flex; justify-content: space-around; width: 800px; margin: auto;}
     .header-title {text-align: center;}
-    .navbar-item {color: black; padding: 10px;}
+    .navbar-item {color: black; padding: 10px; text-decoration: none;}
     .navbar-item:hover { box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 </style>
 
@@ -12,7 +12,13 @@
 <div class="navbar">
     <a class="navbar-item" href="{{ path ('homepage') }}">Главная</a>
     <a class="navbar-item" href="{{ path ('ingredients') }}">Ингредиенты</a>
-    <a class="navbar-item" href="{{ path ('basket') }}">Корзина</a>
+    <a class="navbar-item" href="{{ path ('basket') }}">Корзина
+        {% if amount is defined%}
+            ({{ amount }})
+        {% else %}
+            (0)
+        {% endif %}
+    </a>
     
     <a class="navbar-item" href="{{ path ('admin') }}">Admin</a>
 </div>
