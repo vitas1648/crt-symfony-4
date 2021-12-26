@@ -21,6 +21,34 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: admin; Type: TABLE; Schema: public; Owner: webmaster
+--
+
+CREATE TABLE public.admin (
+    id integer NOT NULL,
+    username character varying(180) NOT NULL,
+    roles json NOT NULL,
+    password character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.admin OWNER TO webmaster;
+
+--
+-- Name: admin_id_seq; Type: SEQUENCE; Schema: public; Owner: webmaster
+--
+
+CREATE SEQUENCE public.admin_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.admin_id_seq OWNER TO webmaster;
+
+--
 -- Name: basket; Type: TABLE; Schema: public; Owner: webmaster
 --
 
@@ -144,6 +172,15 @@ CREATE SEQUENCE public.pizza_ingredients_id_seq
 ALTER TABLE public.pizza_ingredients_id_seq OWNER TO webmaster;
 
 --
+-- Data for Name: admin; Type: TABLE DATA; Schema: public; Owner: webmaster
+--
+
+COPY public.admin (id, username, roles, password) FROM stdin;
+1	admin	["ROLE_ADMIN"]	$2y$13$/bWloz7b6xQxnoa2AhFst.S276ODMDo1SFBoAn0hU09GEGh8leEk.
+\.
+
+
+--
 -- Data for Name: basket; Type: TABLE DATA; Schema: public; Owner: webmaster
 --
 
@@ -163,6 +200,8 @@ DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
 DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
 DoctrineMigrations\\Version20211222133848	2021-12-22 13:39:15	434
 DoctrineMigrations\\Version20211223124913	2021-12-23 12:49:33	425
+DoctrineMigrations\\Version20211226073441	2021-12-26 11:11:09	35
+DoctrineMigrations\\Version20211226110908	2021-12-26 11:11:10	115
 \.
 
 
@@ -222,6 +261,13 @@ COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
 
 
 --
+-- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
+--
+
+SELECT pg_catalog.setval('public.admin_id_seq', 1, false);
+
+
+--
 -- Name: basket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
@@ -247,6 +293,14 @@ SELECT pg_catalog.setval('public.pizza_id_seq', 12, true);
 --
 
 SELECT pg_catalog.setval('public.pizza_ingredients_id_seq', 7, true);
+
+
+--
+-- Name: admin admin_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.admin
+    ADD CONSTRAINT admin_pkey PRIMARY KEY (id);
 
 
 --
@@ -308,6 +362,13 @@ CREATE INDEX idx_ad0714f6933fe08c ON public.pizza_ingredients USING btree (ingre
 --
 
 CREATE INDEX idx_ad0714f6d41d1d42 ON public.pizza_ingredients USING btree (pizza_id);
+
+
+--
+-- Name: uniq_880e0d76f85e0677; Type: INDEX; Schema: public; Owner: webmaster
+--
+
+CREATE UNIQUE INDEX uniq_880e0d76f85e0677 ON public.admin USING btree (username);
 
 
 --
