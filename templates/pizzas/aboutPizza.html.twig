@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PizzasController!{% endblock %}
+{% block title %}Pizza-Rizza:Пицца {{pizza.name}}{% endblock %}
 
 {% block body %}
 <style>
@@ -25,5 +25,6 @@
         </ul>
         <p>Цена: <em>{{pizza.price}}</em> р.</p>
     </div>
+    {{ form(form)}}
 </div>
 {% endblock %}

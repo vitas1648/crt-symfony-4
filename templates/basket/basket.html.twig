@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pizza-Rizza:Корзина{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    img {width: 200px;}
+</style>
+
+{% for item in basket %}
+    <div>
+        <h4>{{ item.pizza.pizza.name }}</h4>
+        <img src="images/pizza/{{ item.pizza.pizza.image }}" >
+        <p>Цена: {{ item.pizza.pizza.price }} р.</p>
+        
+        {{ form_start(item.form) }}
+        {{ form_end(item.form) }}
+
+    </div>
+{% endfor %}
+{% if basket|length > 0 %}
+    <div>
+        {{ form_start(formClear) }}
+            {# {{ form_row(formClear.submit)}} #}
+        {{ form_end(formClear) }}
+
+    </div>
+{% else %}
+    <p>Корзина пуста</p>
+{% endif %}
+{% endblock %}
