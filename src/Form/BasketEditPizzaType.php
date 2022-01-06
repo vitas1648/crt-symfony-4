@@ -21,26 +21,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BasketEditPizzaType extends AbstractType
 {
+    private $formCount;
+
+    public function __construct()
+    {
+        $this->formCount = 0;
+    }
+
+    public function getBlockPrefix()
+    {
+        return parent::getBlockPrefix() . '_' . $this->formCount;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        ++$this->formCount;
         $builder
             ->add('quantity', IntegerType::class, ['label' => 'Количество'])
             ->add('pizza', EntityType::class, [
-                'class' => Pizza::class, 
+                'class' => Pizza::class,
                 'choice_label' => 'name',
-                'label' => ' ', 
-                'attr' => ['hidden' => 'true']])
-            ->addEventSubscriber(new NumberFieldEventSubscriber)
-                // ->add('submit', SubmitType::class, ['label' => 'Удалмть',])
-            // ->setAction(AbstractController::generateUrl('basket_add'))
-            // ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
-                // $formData = $event->getData();
-                // $url = $this->router->generate('basket_add');
-                // return new RedirectResponse($url);
-                // $basketController = new BasketController;
-                // $basketController->add($event);
-            // })
-        ;
+                'label' => ' ',
+                'attr' => ['hidden' => 'true']
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Изменить',]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

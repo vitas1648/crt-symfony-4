@@ -21,17 +21,16 @@
 <div class="pizzas">
     <h3>Выберите пиццу</h3>
     <ul class="cards">
-        {% for item in data %}
-        {# {% for pizza in pizzas %} #}
+        {% for item in forms %}
             <div class="card-small">
-                <a href="{{path ('pizza', {id: item.pizza.id})}}">
+                <a href="{{path ('pizza', {id: item.vars.data.pizza.id})}}">
                     <li>
-                        <h4>{{item.pizza.name}}</h4>
-                        <img src="images/pizza/{{ item.pizza.image }}" >
-                        <p>Цена: <strong>{{ item.pizza.price }}</strong> р.</p>
+                        <h4>{{item.vars.data.pizza.name}}</h4>
+                        <img src="images/pizza/{{ item.vars.data.pizza.image }}" >
+                        <p>Цена: <strong>{{ item.vars.data.pizza.price }}</strong> р.</p>
                     </li>
                 </a>
-                {{ form(item.form) }}
+                {{ form(item) }}
             </div>
         {% endfor %}
     </ul>

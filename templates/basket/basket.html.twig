@@ -17,23 +17,21 @@
 </style>
 
 <div class="basket">
-    {% if basket|length > 0 %}
+    {% if forms|length > 0 %}
         <div class="pizza-cards">
-            {% for item in basket %}
+            {% for item in forms %}
                 <div class="pizza-card">
-                    <h4>{{ item.pizza.name }}</h4>
-                    <img class="pizza-img" src="images/pizza/{{ item.pizza.image }}" >
-                    <p>Цена: {{ item.pizza.price }} р.</p>
+                    <h4>{{ item.vars.data.pizza.name }}</h4>
+                    <img class="pizza-img" src="images/pizza/{{ item.vars.data.pizza.image }}" >
+                    <p>Цена: {{ item.vars.data.pizza.price }} р.</p>
                     <div>
-                        <a class="button" href="{{ path('basket_dec', {'id': item.pizza.id} )}}">Меньше</a>
-                        {{ item.quantity }}
-                        <a class="button" href="{{ path('basket_inc', {'id': item.pizza.id} )}}">Больше</a>
+                        {{ form(item) }}
                     </div>
                 </div>
             {% endfor %}
         </div>
-        {% if count is defined %}
-            <h4>Пицц в заказе: {{ count }} шт.</h4>
+        {% if quantity is defined %}
+            <h4>Пицц в заказе: {{ quantity }} шт.</h4>
         {% endif %}
         {% if amount is defined %}
             <h4>Сумма заказа: {{ amount }} р.</h4>

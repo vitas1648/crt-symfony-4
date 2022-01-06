@@ -28,6 +28,12 @@ class Basket
      */
     private $pizza;
 
+    public function __construct(Pizza $pizza, int $quantity = 1)
+    {
+        $this->pizza = $pizza;
+        $this->quantity = $quantity;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

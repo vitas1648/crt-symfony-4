@@ -19,7 +19,7 @@
         <p>{{pizza.description}}</p>
         <p>Состав:</p>
         <ul>
-            {% for ingredient in pizzaIngredients %}
+            {% for ingredient in pizza.pizzaIngredients %}
                 <li>{{ ingredient.ingredient.name }}</li>
             {% endfor %}
         </ul>
