@@ -9,6 +9,7 @@ use App\Entity\PizzaIngredients;
 use App\Controller\Admin\PizzaCrudController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Controller\Admin\ArticleCrudController;
+use App\Entity\User;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -24,7 +25,7 @@ class DashboardController extends AbstractDashboardController
     {
         $routeBuilder = $this->get(AdminUrlGenerator::class);
         $url = $routeBuilder->setController(PizzaCrudController::class)->generateUrl();
-        
+
         return $this->redirect($url);
     }
 
@@ -41,7 +42,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Pizza', 'fas fa-list', Pizza::class);
         yield MenuItem::linkToCrud('Ingredient', 'fas fa-list', Ingredient::class);
         yield MenuItem::linkToCrud('Pizza\'s ingredients', 'fas fa-list', PizzaIngredients::class);
-        yield MenuItem::linkToCrud('Basket', 'fas fa-list', Basket::class);
+        // yield MenuItem::linkToCrud('Basket', 'fas fa-list', Basket::class);
 
     }
 }

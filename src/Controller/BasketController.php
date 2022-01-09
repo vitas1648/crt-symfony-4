@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\BasketEditPizzaType;
-use App\Repository\BasketRepository;
-use App\Service\Basket\BasketService;
+// use App\Repository\BasketRepository;
+// use App\Service\Basket\BasketService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,12 +19,13 @@ class BasketController extends AbstractController
     // private $em;
 
     public function __construct(
-        BasketService $basketService,
-        BasketRepository $basketRepository,
+        // BasketService $basketService,
+        // BasketRepository $basketRepository,
         // EntityManagerInterface $em,
-    ) {
-        $this->basketService = $basketService;
-        $this->basketRepository = $basketRepository;
+    )
+    {
+        // $this->basketService = $basketService;
+        // $this->basketRepository = $basketRepository;
         // $this->em = $em;
     }
 
