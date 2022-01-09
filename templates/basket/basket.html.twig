@@ -14,6 +14,7 @@
     .button {margin: 10px; padding: 5px; border: 1px solid gray; color:black; text-decoration: none;}
     .button:hover {box-shadow: 0 0 10px rgba(0,0,0,0.5);}
     .basket-buttons {display: flex; flex-wrap: wrap; justify-content: center;}
+    .basket-amount {text-align: center;}
 </style>
 
 <div class="basket">
@@ -34,11 +35,11 @@
             <h4>Пицц в заказе: {{ quantity }} шт.</h4>
         {% endif %}
         {% if amount is defined %}
-            <h4>Сумма заказа: {{ amount }} р.</h4>
+            <h4 class="basket-amount">Сумма заказа: {{ amount }} р.</h4>
         {% endif %}
         <div class="basket-buttons">
             <a class="button" href={{ path('basket_clear') }}>Очистить корзину</a>
-            <a class="button" href={{ path('order') }}>Оформить заказ</a>
+            {# <a class="button" href={{ path('order') }}>Оформить заказ</a> #}
         </div>
     {% else %}
         <p class="message">Корзина пуста</p>

@@ -42,9 +42,11 @@ class CustomerService
     {
         $customer = $this->checkBySession($sessionId);
         if (is_null($customer)) {
-            $customer = new Customer();
-            $customer->setPhone('tmp' . uniqid());
+            $customer = (new Customer())
+                ->setPhone('tmp' . uniqid())
+                ->setSessionId($sessionId);
             $this->em->persist($customer);
+            $this->em->flush();
         }
         return $customer;
     }
