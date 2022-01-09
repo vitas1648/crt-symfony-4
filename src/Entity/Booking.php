@@ -46,6 +46,11 @@ class Booking
         $this->baskets = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->customer->getPhone();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
