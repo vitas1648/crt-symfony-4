@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PizzaRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity(repositoryClass=PizzaRepository::class)
  * @Vich\Uploadable
  */
+#[ApiResource()]
 class Pizza
 {
     /**
