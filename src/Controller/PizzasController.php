@@ -39,7 +39,8 @@ class PizzasController extends AbstractController
         $paginator = $this->pizzaRepository->getPizzaPaginator($offset);
         $formsView = [];
         foreach ($paginator as $item) {
-            $basket = new Basket($item);
+            $basket = new Basket();
+            $basket->setPizza($item)->setQuantity(1);
             $form = $this->createForm(BasketAddPizzaType::class, $basket);
             $formsView[] = $form->createView();
             $form->handleRequest($request);

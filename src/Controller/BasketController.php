@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\BasketEditPizzaType;
-// use App\Repository\BasketRepository;
+use App\Repository\BasketRepository;
 // use App\Service\Basket\BasketService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,11 @@ class BasketController extends AbstractController
 
     public function __construct(
         // BasketService $basketService,
-        // BasketRepository $basketRepository,
+        BasketRepository $basketRepository,
         // EntityManagerInterface $em,
-    )
-    {
+    ) {
         // $this->basketService = $basketService;
-        // $this->basketRepository = $basketRepository;
+        $this->basketRepository = $basketRepository;
         // $this->em = $em;
     }
 
@@ -35,18 +34,18 @@ class BasketController extends AbstractController
     ): Response {
         $basket = $this->basketRepository->findBy([], ['id' => 'ASC']);
         $formsView = [];
-        foreach ($basket as $item) {
-            $form = $this->createForm(BasketEditPizzaType::class, $item);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->basketService->editPizza(
-                    $form->getData()->getPizza()->getId(),
-                    $form->getData()->getQuantity()
-                );
-            }
-            $formsView[] = $form->createView();
-        }
-        [$quantity, $amount] = $this->basketService->calculate();
+        // foreach ($basket as $item) {
+        // $form = $this->createForm(BasketEditPizzaType::class, $item);
+        // $form->handleRequest($request);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $this->basketService->editPizza(
+        //         $form->getData()->getPizza()->getId(),
+        //         $form->getData()->getQuantity()
+        //     );
+        // }
+        // $formsView[] = $form->createView();
+        // }
+        [$quantity, $amount] = [0, 0]; //$this->basketService->calculate();
         return $this->render('basket/basket.html.twig', [
             'quantity' => $quantity,
             'amount' => $amount,

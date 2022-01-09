@@ -28,11 +28,16 @@ class Basket
      */
     private $pizza;
 
-    public function __construct(Pizza $pizza, int $quantity = 1)
-    {
-        $this->pizza = $pizza;
-        $this->quantity = $quantity;
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Booking::class, inversedBy="baskets")
+     */
+    private $booking;
+
+    // public function __construct(Pizza $pizza, int $quantity = 1)
+    // {
+    //     $this->pizza = $pizza;
+    //     $this->quantity = $quantity;
+    // }
 
     public function getId(): ?int
     {
@@ -59,6 +64,18 @@ class Basket
     public function setPizza(?Pizza $pizza): self
     {
         $this->pizza = $pizza;
+
+        return $this;
+    }
+
+    public function getBooking(): ?Booking
+    {
+        return $this->booking;
+    }
+
+    public function setBooking(?Booking $booking): self
+    {
+        $this->booking = $booking;
 
         return $this;
     }

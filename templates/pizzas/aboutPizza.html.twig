@@ -25,6 +25,8 @@
         </ul>
         <p>Цена: <em>{{pizza.price}}</em> р.</p>
     </div>
-    {{ form(form)}}
+    {% if form is defined %}
+        {{ form(form)}}
+    {% endif %}
 </div>
 {% endblock %}
