@@ -55,6 +55,7 @@ ALTER TABLE public.admin_id_seq OWNER TO webmaster;
 CREATE TABLE public.basket (
     id integer NOT NULL,
     pizza_id integer NOT NULL,
+    booking_id integer,
     quantity integer NOT NULL
 );
 
@@ -74,6 +75,70 @@ CREATE SEQUENCE public.basket_id_seq
 
 
 ALTER TABLE public.basket_id_seq OWNER TO webmaster;
+
+--
+-- Name: booking; Type: TABLE; Schema: public; Owner: webmaster
+--
+
+CREATE TABLE public.booking (
+    id integer NOT NULL,
+    customer_id integer,
+    created_at timestamp(0) without time zone NOT NULL,
+    amount integer NOT NULL
+);
+
+
+ALTER TABLE public.booking OWNER TO webmaster;
+
+--
+-- Name: COLUMN booking.created_at; Type: COMMENT; Schema: public; Owner: webmaster
+--
+
+COMMENT ON COLUMN public.booking.created_at IS '(DC2Type:datetime_immutable)';
+
+
+--
+-- Name: booking_id_seq; Type: SEQUENCE; Schema: public; Owner: webmaster
+--
+
+CREATE SEQUENCE public.booking_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_id_seq OWNER TO webmaster;
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: webmaster
+--
+
+CREATE TABLE public.customer (
+    id integer NOT NULL,
+    session_id character varying(255) NOT NULL,
+    phone character varying(255) NOT NULL,
+    name character varying(255) DEFAULT NULL::character varying,
+    address character varying(255) DEFAULT NULL::character varying
+);
+
+
+ALTER TABLE public.customer OWNER TO webmaster;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE; Schema: public; Owner: webmaster
+--
+
+CREATE SEQUENCE public.customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customer_id_seq OWNER TO webmaster;
 
 --
 -- Name: doctrine_migration_versions; Type: TABLE; Schema: public; Owner: webmaster
@@ -184,9 +249,29 @@ COPY public.admin (id, username, roles, password) FROM stdin;
 -- Data for Name: basket; Type: TABLE DATA; Schema: public; Owner: webmaster
 --
 
-COPY public.basket (id, pizza_id, quantity) FROM stdin;
-12	12	1
-13	10	1
+COPY public.basket (id, pizza_id, booking_id, quantity) FROM stdin;
+31	12	9	1
+\.
+
+
+--
+-- Data for Name: booking; Type: TABLE DATA; Schema: public; Owner: webmaster
+--
+
+COPY public.booking (id, customer_id, created_at, amount) FROM stdin;
+8	10	2022-01-09 18:19:34	1485
+9	11	2022-01-09 18:21:52	0
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: webmaster
+--
+
+COPY public.customer (id, session_id, phone, name, address) FROM stdin;
+9	1b538a1de46de722ea644477a2db15da	tmp61db26c6a7cf3	\N	\N
+10	bc0c6b8f6e1f47440fe97d28435f2963	tmp61db2736c6ab1	\N	\N
+11	76155a015c5be60323f46c74c94d8cde	tmp61db27c0b8383	\N	\N
 \.
 
 
@@ -195,13 +280,7 @@ COPY public.basket (id, pizza_id, quantity) FROM stdin;
 --
 
 COPY public.doctrine_migration_versions (version, executed_at, execution_time) FROM stdin;
-DoctrineMigrations\\Version20211220091129	2021-12-20 09:11:54	127
-DoctrineMigrations\\Version20211220101415	2021-12-20 10:15:23	155
-DoctrineMigrations\\Version20211220175737	2021-12-20 17:57:59	443
-DoctrineMigrations\\Version20211222133848	2021-12-22 13:39:15	434
-DoctrineMigrations\\Version20211223124913	2021-12-23 12:49:33	425
-DoctrineMigrations\\Version20211226073441	2021-12-26 11:11:09	35
-DoctrineMigrations\\Version20211226110908	2021-12-26 11:11:10	115
+DoctrineMigrations\\Version20220109132954	2022-01-09 13:30:13	580
 \.
 
 
@@ -223,6 +302,8 @@ COPY public.ingredient (id, name) FROM stdin;
 11	вяленные томаты
 12	сладкий перец
 13	перец чили
+15	анчоус
+16	всякое
 \.
 
 
@@ -257,6 +338,11 @@ COPY public.pizza_ingredients (id, pizza_id, ingredient_id) FROM stdin;
 5	2	2
 6	2	4
 7	2	5
+8	12	5
+9	12	15
+10	12	9
+11	12	11
+12	12	12
 \.
 
 
@@ -271,7 +357,21 @@ SELECT pg_catalog.setval('public.admin_id_seq', 1, false);
 -- Name: basket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
 --
 
-SELECT pg_catalog.setval('public.basket_id_seq', 13, true);
+SELECT pg_catalog.setval('public.basket_id_seq', 31, true);
+
+
+--
+-- Name: booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
+--
+
+SELECT pg_catalog.setval('public.booking_id_seq', 9, true);
+
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webmaster
+--
+
+SELECT pg_catalog.setval('public.customer_id_seq', 11, true);
 
 
 --
@@ -312,6 +412,22 @@ ALTER TABLE ONLY public.basket
 
 
 --
+-- Name: booking booking_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.booking
+    ADD CONSTRAINT booking_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: doctrine_migration_versions doctrine_migration_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: webmaster
 --
 
@@ -344,6 +460,13 @@ ALTER TABLE ONLY public.pizza
 
 
 --
+-- Name: idx_2246507b3301c60; Type: INDEX; Schema: public; Owner: webmaster
+--
+
+CREATE INDEX idx_2246507b3301c60 ON public.basket USING btree (booking_id);
+
+
+--
 -- Name: idx_2246507bd41d1d42; Type: INDEX; Schema: public; Owner: webmaster
 --
 
@@ -365,10 +488,25 @@ CREATE INDEX idx_ad0714f6d41d1d42 ON public.pizza_ingredients USING btree (pizza
 
 
 --
+-- Name: idx_e00cedde9395c3f3; Type: INDEX; Schema: public; Owner: webmaster
+--
+
+CREATE INDEX idx_e00cedde9395c3f3 ON public.booking USING btree (customer_id);
+
+
+--
 -- Name: uniq_880e0d76f85e0677; Type: INDEX; Schema: public; Owner: webmaster
 --
 
 CREATE UNIQUE INDEX uniq_880e0d76f85e0677 ON public.admin USING btree (username);
+
+
+--
+-- Name: basket fk_2246507b3301c60; Type: FK CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.basket
+    ADD CONSTRAINT fk_2246507b3301c60 FOREIGN KEY (booking_id) REFERENCES public.booking(id);
 
 
 --
@@ -393,6 +531,14 @@ ALTER TABLE ONLY public.pizza_ingredients
 
 ALTER TABLE ONLY public.pizza_ingredients
     ADD CONSTRAINT fk_ad0714f6d41d1d42 FOREIGN KEY (pizza_id) REFERENCES public.pizza(id);
+
+
+--
+-- Name: booking fk_e00cedde9395c3f3; Type: FK CONSTRAINT; Schema: public; Owner: webmaster
+--
+
+ALTER TABLE ONLY public.booking
+    ADD CONSTRAINT fk_e00cedde9395c3f3 FOREIGN KEY (customer_id) REFERENCES public.customer(id);
 
 
 --
