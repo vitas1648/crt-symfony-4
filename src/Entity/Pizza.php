@@ -15,7 +15,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity(repositoryClass=PizzaRepository::class)
  * @Vich\Uploadable
  */
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'delete']
+)]
 class Pizza
 {
     /**
