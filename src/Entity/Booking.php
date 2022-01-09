@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\BookingRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BookingRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=BookingRepository::class)
@@ -26,6 +27,7 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @var \DateTime
      */
     private $createdAt;
 
@@ -61,12 +63,12 @@ class Booking
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 

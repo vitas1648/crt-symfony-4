@@ -2,41 +2,52 @@
 
 namespace App\Service\Basket;
 
-// use App\Entity\Basket;
+use App\Entity\Basket;
+use App\Entity\Pizza;
+use App\Repository\BookingRepository;
+use App\Repository\BasketRepository;
 use App\Repository\PizzaRepository;
-// use App\Repository\BasketRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class BasketService
 {
-    // private PizzaRepository $pizzaRepository;
-    // private BasketRepository $basketRepository;
-    // private EntityManagerInterface $em;
+    private PizzaRepository $pizzaRepository;
+    private BookingRepository $bookingRepository;
+    private BasketRepository $basketRepository;
+    private EntityManagerInterface $em;
 
-    // public function __construct(
-    //     PizzaRepository $pizzaRepository,
-    //     BasketRepository $basketRepository,
-    //     EntityManagerInterface $em,
-    // ) {
-    //     $this->pizzaRepository = $pizzaRepository;
-    //     $this->basketRepository = $basketRepository;
-    //     $this->em = $em;
-    // }
+    public function __construct(
+        PizzaRepository $pizzaRepository,
+        BookingRepository $bookingRepository,
+        BasketRepository $basketRepository,
+        EntityManagerInterface $em,
+    ) {
+        $this->pizzaRepository = $pizzaRepository;
+        $this->bookingRepository = $bookingRepository;
+        $this->basketRepository = $basketRepository;
+        $this->em = $em;
+    }
 
-    // public function addPizza(int $pizzaId, int $quantity): void
-    // {
-    //     $basket = $this->basketRepository->findOneBy(['pizza' => $pizzaId]);
-    //     if (is_null($basket)) {
-    //         $pizza = $this->pizzaRepository->findOneBy(['id' => $pizzaId]);
-    //         $basket = new Basket($pizza, $quantity);
-    //     } else {
-    //         $basket->setQuantity($basket->getQuantity() + $quantity);
-    //     }
-    //     $this->em->persist($basket);
-    //     $this->em->flush();
-    //     return;
-    // }
+    public function addPizza(int $pizzaId, int $quantity, int $bookingId): void
+    {
+        $basket = $this->basketRepository->findOneBy([
+            'pizza' => $pizzaId,
+            'booking' => $bookingId,
+        ]);
+        if (is_null($basket)) {
+            $pizza = $this->pizzaRepository->findOneBy(['id' => $pizzaId]);
+            $booking = $this->bookingRepository->findOneBy(['id' => $bookingId]);
+            $basket = (new Basket())
+                ->setPizza($pizza)
+                ->setQuantity($quantity)
+                ->setBooking($booking);
+        } else {
+            $basket->setQuantity($basket->getQuantity() + $quantity);
+        }
+        $this->em->persist($basket);
+        $this->em->flush();
+        return;
+    }
 
     // public function editPizza(int $pizzaId, int $quantity): void
     // {
@@ -71,4 +82,20 @@ class BasketService
     //     }
     //     $this->em->flush();
     // }
+
+    public function createBasket(Pizza $pizza): Basket
+    {
+        $basket = new Basket();
+        $basket->setPizza($pizza)->setQuantity(1);
+        return $basket;
+    }
+
+    public function addBasket(Basket $basket): Basket
+    {
+        if (is_null($basket->getId())) {
+            $this->em->persist($basket);
+            $this->em->flush();
+        }
+        return $basket;
+    }
 }

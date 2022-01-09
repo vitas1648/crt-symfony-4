@@ -105,7 +105,7 @@ class Pizza
     {
         return $this->image;
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;

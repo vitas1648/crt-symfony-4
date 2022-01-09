@@ -30,6 +30,7 @@ class Basket
 
     /**
      * @ORM\ManyToOne(targetEntity=Booking::class, inversedBy="baskets")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $booking;
 
